@@ -1,7 +1,7 @@
 
 
 import React from "react";
-import { Component, K8sApi, Util, Navigation } from "@k8slens/extensions";
+import { Component, K8sApi, Util, Navigation, Store } from "@k8slens/extensions";
 import { debugPodPreferencesStore } from "./debug-pod-preferences-store";
 
 export interface DebugPodToolsMenuProps extends Component.KubeObjectMenuProps<K8sApi.Pod> {
@@ -62,7 +62,7 @@ export class DebugPodToolsMenu extends React.Component<DebugPodToolsMenuProps> {
   render() {
     const { object, toolbar } = this.props;
     const containers = object.getRunningContainers();
-
+    console.log(Store.clusterStore.activeCluster)
     return (
       <Component.MenuItem>
         <Component.Icon material="library_add" interactive={toolbar} title="Debug Pods Extension"/>
@@ -73,7 +73,7 @@ export class DebugPodToolsMenu extends React.Component<DebugPodToolsMenuProps> {
               <Component.MenuItem key={"deployAndRunDebugPod"} onClick={Util.prevDefault(() => this.createDebugPodAndRun())} className="flex align-center">
               <span>Run as debug pod</span>
               </Component.MenuItem>
-              {containers.length > 0 && debugPodPreferencesStore.ephemeralContainersEnabled &&(
+              {containers.length > 0 && debugPodPreferencesStore.ephemeralContainersEnabled.indexOf(Store.clusterStore.activeCluster.name) > -1 && (
               <Component.MenuItem key={"attachAndRunDebugContainer"} onClick={Util.prevDefault(() => this.attachAndRunDebugContainer(containers[0].name))} className="flex align-center">
               <span>Run as emepheral container</span>
               {containers.length > 1 && (

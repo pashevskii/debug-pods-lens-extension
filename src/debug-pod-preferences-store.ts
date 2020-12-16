@@ -3,19 +3,23 @@ import { observable, toJS } from "mobx";
 
 export type DebugPodPreferencesModel = {
   debugImage: string;
-  ephemeralContainersEnabled: boolean;
+  ephemeralContainersEnabled: string[];
+  debugImageList: string[];
+
 };
 
 export class DebugPodPreferencesStore extends Store.ExtensionStore<DebugPodPreferencesModel> {
   @observable debugImage = "busybox";
-  @observable ephemeralContainersEnabled = true;
+  @observable ephemeralContainersEnabled = new Array();
+  @observable debugImageList = ["busybox", "markeijsermans/debug"];
 
   private constructor() {
     super({
       configName: "preferences-store",
       defaults: {
         debugImage: "busybox",
-        ephemeralContainersEnabled: true,
+        ephemeralContainersEnabled: new Array(),
+        debugImageList: ["busybox", "markeijsermans/debug"]
       }
     });
   }
@@ -24,16 +28,15 @@ export class DebugPodPreferencesStore extends Store.ExtensionStore<DebugPodPrefe
     console.log("From store", data.debugImage, data.ephemeralContainersEnabled)
     this.debugImage = data.debugImage;
     this.ephemeralContainersEnabled = data.ephemeralContainersEnabled;
+    this.debugImageList = data.debugImageList
   }
 
   toJSON(): DebugPodPreferencesModel {
-    console.log("toJSON", {
-      debugImage: this.debugImage,
-      ephemeralContainersEnabled: this.ephemeralContainersEnabled,
-    })
+
     const value :DebugPodPreferencesModel  = {
       debugImage: this.debugImage,
       ephemeralContainersEnabled: this.ephemeralContainersEnabled,
+      debugImageList: this.debugImageList,
     }
     return toJS(value , {
       recurseEverything: true
