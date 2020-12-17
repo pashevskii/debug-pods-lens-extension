@@ -1,13 +1,16 @@
-import { Component, Store } from "@k8slens/extensions";
+import { Component,K8sApi, Navigation, Store } from "@k8slens/extensions";
 import React from "react";
 import { observer } from "mobx-react";
 import { DebugPodPreferencesStore } from "./debug-pod-preferences-store";
+import { AddDebugImageDialog} from "./add-debug-image-dialog"
+import {DebugPodUtils} from "./debug-pod-utils"
 
 @observer
 export class DebugPodToolsPreferenceInput extends React.Component<{debug: DebugPodPreferencesStore}, {}> {
+
   render() {
+    Store.Cluster
     const { debug } = this.props;
-    console.log(Store.clusterStore.activeCluster)
     return (
       <>
       <h5>Debug Image</h5>
@@ -18,17 +21,20 @@ export class DebugPodToolsPreferenceInput extends React.Component<{debug: DebugP
         value={debug.debugImage}
         onChange={({ value }: Component.SelectOption) => {debug.debugImage = value;}}
         />
-
       </div>
       <h5>Enable ephemeral containers for the clusters</h5>
       {Store.clusterStore.getByWorkspaceId(Store.workspaceStore.currentWorkspaceId).map((cluster, index) => (
-        <Component.Checkbox
+        <><Component.Checkbox
+          disabled = {!DebugPodUtils.isClusterSupportEphemeralContainers(cluster)}
           label={cluster.name}
           value={debug.ephemeralContainersEnabled.indexOf(cluster.name) > -1}
           onChange={v => this.toggleEphemeralContainersAccessibility(v, cluster.name)}
-          />))}
-      <span>Warning! Be sure that Ephemeral Containers are enabled on your cluster before using this function! More information is
-      <a href="https://www.shogan.co.uk/kubernetes/enabling-and-using-ephemeral-containers-on-kubernetes-1-16/" target="_blank" rel="noreferrer"> here</a></span>
+          />
+          {!DebugPodUtils.isClusterSupportEphemeralContainers(cluster) && (<span> Warning, the cluster doesn't support ephemeral containers or is not available</span>)}
+          </>
+        ))}
+      <div><span>Warning! Be sure that Ephemeral Containers are enabled on your cluster before using this function! More information is
+      <a href="https://www.shogan.co.uk/kubernetes/enabling-and-using-ephemeral-containers-on-kubernetes-1-16/" target="_blank" rel="noreferrer"> here</a></span></div>
       </>
     );
   }
@@ -45,6 +51,8 @@ export class DebugPodToolsPreferenceInput extends React.Component<{debug: DebugP
     debug.ephemeralContainersEnabled = Array.from(emepheralContainersEnabledSet);
   }
 }
+
+
 
 export class DebugPodToolsPreferenceHint extends React.Component {
   render() {

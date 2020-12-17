@@ -3,6 +3,7 @@
 import React from "react";
 import { Component, K8sApi, Util, Navigation, Store } from "@k8slens/extensions";
 import { debugPodPreferencesStore } from "./debug-pod-preferences-store";
+import { DebugPodUtils } from "./debug-pod-utils"
 
 export interface DebugPodToolsMenuProps extends Component.KubeObjectMenuProps<K8sApi.Pod> {
 }
@@ -14,7 +15,8 @@ export class DebugPodToolsMenu extends React.Component<DebugPodToolsMenuProps> {
   async attachAndRunDebugContainer(container?: string) {
     Navigation.hideDetails();
     const { object: pod } = this.props;
-    let command = `kubectl alpha debug -i -t -n ${pod.getNs()} ${pod.getName()} --image=${debugPodPreferencesStore.debugImage} --target ${container} --attach`;
+    let command = DebugPodUtils.getDebugCommand(Store.clusterStore.activeCluster);
+    command = `${command} -i -t -n ${pod.getNs()} ${pod.getName()} --image=${debugPodPreferencesStore.debugImage} --target ${container} --attach`;
     if (window.navigator.platform !== "Win32") {
       command = `exec ${command}`;
     }
@@ -62,7 +64,6 @@ export class DebugPodToolsMenu extends React.Component<DebugPodToolsMenuProps> {
   render() {
     const { object, toolbar } = this.props;
     const containers = object.getRunningContainers();
-    console.log(Store.clusterStore.activeCluster)
     return (
       <Component.MenuItem>
         <Component.Icon material="library_add" interactive={toolbar} title="Debug Pods Extension"/>

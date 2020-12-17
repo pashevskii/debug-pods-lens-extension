@@ -1,4 +1,4 @@
-import { LensRendererExtension ,Component, K8sApi, Util, Navigation} from "@k8slens/extensions";
+import { LensRendererExtension ,Component, K8sApi, Util, Store} from "@k8slens/extensions";
 import { action, observable } from "mobx";
 
 export class DebugPodUtils{
@@ -12,4 +12,20 @@ export class DebugPodUtils{
     }
     else return null
   }
+
+  //Ephemeral containers are supported by k8s 1.16+
+  static isClusterSupportEphemeralContainers(cluster: Store.Cluster) : boolean {
+    if (!cluster.version) return false;
+    const blocks =  cluster.version.split(".").map(x=>parseInt(x))
+    return blocks[1] > 15;
+  }
+
+  // K8s 1.20 uses kubectl debug instead of kubectl alpha debug
+  static getDebugCommand(cluster: Store.Cluster) : string {
+    if (!cluster.version) return "kubectl alpha debug";
+    const blocks =  cluster.version.split(".").map(x=>parseInt(x));
+    if (blocks[1] > 19) return "kubectl debug";
+    else return "kubectl alpha debug";
+  }
+
 }
