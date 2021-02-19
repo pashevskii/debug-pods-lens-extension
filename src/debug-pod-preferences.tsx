@@ -9,7 +9,6 @@ import {DebugPodUtils} from "./debug-pod-utils"
 export class DebugPodToolsPreferenceInput extends React.Component<{debug: DebugPodPreferencesStore}, {}> {
 
   render() {
-    Store.Cluster
     const { debug } = this.props;
     return (
       <>
@@ -20,6 +19,15 @@ export class DebugPodToolsPreferenceInput extends React.Component<{debug: DebugP
         options={debug.debugImageList}
         value={debug.debugImage}
         onChange={({ value }: Component.SelectOption) => {debug.debugImage = value;}}
+        />
+        <Component.Button
+            primary
+            label={"Add Image"}
+            onClick={() => AddDebugImageDialog.open()}
+        />
+        <Component.Button
+            label={"Remove image"}
+            onClick={()=> {debug.debugImageList = debug.debugImageList.filter(item => item != debug.debugImage); debug.debugImage=debug.debugImageList[0];}}
         />
       </div>
       <h5>Enable ephemeral containers for the clusters</h5>
@@ -35,9 +43,14 @@ export class DebugPodToolsPreferenceInput extends React.Component<{debug: DebugP
         ))}
       <div><span>Warning! Be sure that Ephemeral Containers are enabled on your cluster before using this function! More information is
       <a href="https://www.shogan.co.uk/kubernetes/enabling-and-using-ephemeral-containers-on-kubernetes-1-16/" target="_blank" rel="noreferrer"> here</a></span></div>
+      <AddDebugImageDialog onSuccess={(v) => {debug.debugImageList.push(v); debug.debugImage = v; }}/>
       </>
     );
   }
+
+  /*checkAllClusters() {
+    Store.clusterStore.getByWorkspaceId(Store.workspaceStore.currentWorkspaceId)[0].activate().then(() => {console.log("Active")}).catch(()=>{console.log("ERROR")})
+  }*/
 
 
   toggleEphemeralContainersAccessibility(value:boolean, name: string) {

@@ -35,7 +35,7 @@ export default class PodDebugMenuRendererExtension extends LensRendererExtension
   ];
 
   async onActivate() {
-    console.log("telemetry extension activated");
+    console.log("debug pods extension activated");
     await debugPodPreferencesStore.loadExtension(this);
   }
 }
