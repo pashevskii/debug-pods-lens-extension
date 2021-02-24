@@ -1,6 +1,6 @@
 {
   "name": "lens-debug-tools",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Lens debug tools",
   "main": "dist/main.js",
   "renderer": "dist/renderer.js",

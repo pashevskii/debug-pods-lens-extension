@@ -30,6 +30,11 @@ export class DebugPodToolsPreferenceInput extends React.Component<{debug: DebugP
             onClick={()=> {debug.debugImageList = debug.debugImageList.filter(item => item != debug.debugImage); debug.debugImage=debug.debugImageList[0];}}
         />
       </div>
+      <Component.Checkbox
+        label="Show all debug images in context menu"
+        value={debug.showAllImages}
+        onChange={v => {debug.showAllImages = v}}
+        />
       <h5>Enable ephemeral containers for the clusters</h5>
       {Store.clusterStore.getByWorkspaceId(Store.workspaceStore.currentWorkspaceId).map((cluster, index) => (
         <><Component.Checkbox
