@@ -35,3 +35,5 @@ $ cd /your/src/path
 $ npm install
 $ npm run build
 ```
+or 
+Press CTRL+SHIFT+E, paste the url and click on Install button: https://github.com/pashevskii/debug-pods-lens-extension/releases/download/0.1.0/debug-pods-lens-extension.tgz
