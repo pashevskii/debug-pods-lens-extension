@@ -16,7 +16,7 @@ The menu includes the next subitems:
 | Run as ephemeral image | Attaches and runs ephemeral image to the selected Pod. If the Pod contains 2+ containers you can select which will be linked with an ephemeral container. Warning! Be sure that the current cluster supports this feature
 
 ### configuration
-The extension adds 2 parameters in File -> Preferences
+The extension adds 3 parameters in File -> Preferences
 Debug Image: default image, which will be used for ephemeral containers and debug pods, possible values:
 | Name | Description | Link |
 | ------ | ------ | ------|
@@ -24,7 +24,9 @@ Debug Image: default image, which will be used for ephemeral containers and debu
 | markeijsermans/debug |  | https://hub.docker.com/r/markeijsermans/debug |
 | praqma/network-multitool |  | https://hub.docker.com/r/praqma/network-multitool |
 
-Use ephemeral containers: Just hides/shows subitems related to ephemeral containers
+Show all debug images in context menu: shows all debug images as context menu for operation
+
+Use ephemeral containers: Just hides/shows subitems related to ephemeral containers for each cluster
 
 # Installation
 
