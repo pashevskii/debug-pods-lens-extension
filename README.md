@@ -22,6 +22,7 @@ Debug Image: default image, which will be used for ephemeral containers and debu
 | ------ | ------ | ------|
 | busybox | Default value | https://hub.docker.com/_/busybox |
 | markeijsermans/debug |  | https://hub.docker.com/r/markeijsermans/debug |
+| praqma/network-multitool |  | https://hub.docker.com/r/praqma/network-multitool |
 
 Use ephemeral containers: Just hides/shows subitems related to ephemeral containers
 
