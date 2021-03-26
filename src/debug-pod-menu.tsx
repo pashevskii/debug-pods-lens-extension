@@ -17,15 +17,12 @@ export class DebugPodToolsMenu extends React.Component<DebugPodToolsMenuProps> {
     const { object: pod } = this.props;
     let command = DebugPodUtils.getDebugCommand(Store.clusterStore.activeCluster);
     command = `${command} -i -t -n ${pod.getNs()} ${pod.getName()} --image=${debugImage} --target ${container} --attach`;
-    if (window.navigator.platform !== "Win32") {
-      command = `exec ${command}`;
-    }
 
     const shell = Component.createTerminalTab({
       title: `Pod: ${pod.getName()} (namespace: ${pod.getNs()})`
     });
 
-    Component.terminalStore.sendCommand(command, {
+    Component.terminalStore.sendCommand(this.formatCommand(command), {
       enter: true,
       tabId: shell.id
     });
@@ -35,9 +32,7 @@ export class DebugPodToolsMenu extends React.Component<DebugPodToolsMenuProps> {
     Navigation.hideDetails();
     const { object: pod } = this.props;
     let command = `kubectl run ${pod.getName()}-debug -n ${pod.getNs()} -it --image=${debugImage} --restart=Never  --attach `;
-    if (window.navigator.platform !== "Win32") {
-      command = `exec ${command}`;
-    }
+
     if (pod.getNodeName()) {
       command = `${command} --overrides='{ "spec": { "nodeName": "${pod.getNodeName()}" } }'`
     }
@@ -54,11 +49,16 @@ export class DebugPodToolsMenu extends React.Component<DebugPodToolsMenuProps> {
       title: `Pod: ${pod.getName()}-debug (namespace: ${pod.getNs()})`
     });
 
-    Component.terminalStore.sendCommand(command, {
+    Component.terminalStore.sendCommand(this.formatCommand(command), {
       enter: true,
       tabId: shell.id
     });
 
+  }
+
+  formatCommand(command: string):string {
+    if (window.navigator.platform !== "Win32") return `exec ${command}`;
+    else return command.replace(/"/g, '\\"');
   }
 
   renderAllImagesAttach(container: string) {
