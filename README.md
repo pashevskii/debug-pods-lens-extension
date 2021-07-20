@@ -39,4 +39,8 @@ $ npm install
 $ npm run build
 ```
 or 
-Press CTRL+SHIFT+E on Lens, paste the url and click on Install button: https://github.com/pashevskii/debug-pods-lens-extension/releases/download/0.1.2/lens-debug-tools-0.1.2.tgz
+Press CTRL+SHIFT+E on Lens, paste the url and click on Install button: 
+lens 4:
+https://github.com/pashevskii/debug-pods-lens-extension/releases/download/0.1.2/lens-debug-tools-0.1.2.tgz
+lens 5:
+https://github.com/pashevskii/debug-pods-lens-extension/releases/download/0.1.3/lens-debug-tools-0.1.3.tgz
